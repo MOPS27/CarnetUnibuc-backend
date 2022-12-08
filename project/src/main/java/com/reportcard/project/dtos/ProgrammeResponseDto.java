@@ -1,9 +1,9 @@
 package com.reportcard.project.dtos;
 
 public class ProgrammeResponseDto {
-	public Integer id;
-	public String name;
-	public Integer numberOfYears;
+	private Integer id;
+	private String name;
+	private Integer numberOfYears;
 	public Integer getId() {
 		return id;
 	}

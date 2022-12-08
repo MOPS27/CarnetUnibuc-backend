@@ -9,13 +9,13 @@ import javax.validation.constraints.Min;
 public class Programme {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public Integer id;
+	private Integer id;
 	
 	@Column(nullable = false, length = 100, unique = true)
-	public String name;
+	private String name;
 	
 	@Min(value = 0)
-	public Integer numberOfYears;
+	private Integer numberOfYears;
 
 	public Integer getId() {
 		return id;

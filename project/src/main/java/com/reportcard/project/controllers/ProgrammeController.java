@@ -27,8 +27,6 @@ import com.reportcard.project.services.ProgrammeService;
 @RequestMapping("/programmes")
 public class ProgrammeController {
 
-	private SmartValidator validator = new LocalValidatorFactoryBean();
-	
 	@Autowired
 	private ProgrammeService programmeService;
 	
@@ -41,11 +39,10 @@ public class ProgrammeController {
 	public ResponseEntity<ProgrammeResponseDto> create(@Valid @RequestBody ProgrammeRequestDto request) 
 	throws URISyntaxException, DuplicateItemException {
 
-		
 		var response = programmeService.create(request);
 		
 		HttpHeaders responseHeaders = new HttpHeaders();
-		responseHeaders.setLocation(new URI(String.format("/programmes/%s", response.id)));
+		responseHeaders.setLocation(new URI(String.format("/programmes/%s", response.getId())));
 		
 		return new ResponseEntity<ProgrammeResponseDto>(response, responseHeaders, HttpStatus.CREATED);
 	}

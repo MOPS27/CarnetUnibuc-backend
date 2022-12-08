@@ -2,11 +2,9 @@ package com.reportcard.project.exceptions;
 
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,22 +21,20 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleNotFoundException(
             NotFoundException ex, WebRequest request) {
 
-//    	  var body = new HashMap<String, Object>();
-//        body.put("timestamp", LocalDateTime.now());
-//        body.put("message", ex.getMessage());
-
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    	var body = new HashMap<String, String>();
+    	body.put("message", ex.getMessage());
+    	
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(DuplicateItemException.class)
     public ResponseEntity<Object> handleDuplicateItemException(
     		DuplicateItemException ex, WebRequest request) {
 
-//        var body = new HashMap<String, Object>();
-//        body.put("timestamp", LocalDateTime.now());
-//        body.put("message", ex.getMessage());
-
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+    	var body = new HashMap<String, String>();
+    	body.put("message", ex.getMessage());
+    	
+        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
     
     @Override
@@ -50,8 +46,6 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
           .getFieldErrors()
           .stream()
           .collect(Collectors.toMap(e -> e.getField(), e -> e.getDefaultMessage()));
-
-      //body.put("errors", errors);
 
       return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }

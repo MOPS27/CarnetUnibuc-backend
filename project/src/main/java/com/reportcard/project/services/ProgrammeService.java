@@ -40,18 +40,22 @@ public class ProgrammeService {
 		
 		Programme programme = modelMapper.map(request, Programme.class);
 		
-		if(isProgrammeNameUnique(request.getName())) {
-			throw new DuplicateItemException("Programul de studiu", "denumirea", request.getName());
-		}
+		validateProgrammeNameUnique(request.getName());
 		
 		var createdProgramme = programmeRepository.save(programme);
 		
 		return modelMapper.map(createdProgramme, ProgrammeResponseDto.class);
 	}
 	
-	private boolean isProgrammeNameUnique(String name) {
-		return programmeRepository.findAll()
-				.stream()
-				.anyMatch(x -> x.getName() == name);
+	private void validateProgrammeNameUnique(String name) throws DuplicateItemException {
+		
+		var all = programmeRepository.findAll();
+		
+		var any = all.stream()
+				.anyMatch(x -> x.getName().equals(name));
+		
+		if (any) {
+			throw new DuplicateItemException("Programul de studiu", "denumirea", name);
+		}
 	}
 }
