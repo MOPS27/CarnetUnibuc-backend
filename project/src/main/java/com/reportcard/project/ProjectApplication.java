@@ -2,11 +2,9 @@ package com.reportcard.project;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 
 
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class }, 
-	scanBasePackages = "com.reportcard.project.repositories")
+@SpringBootApplication
 public class ProjectApplication {
 
 	public static void main(String[] args) {

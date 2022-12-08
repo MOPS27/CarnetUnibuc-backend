@@ -12,15 +12,12 @@ import com.reportcard.project.services.ProgrammeService;
 @RequestMapping("/programmes")
 public class ProgrammeController {
 
-	private final ProgrammeService programmeService;
 	
 	@Autowired
-	public ProgrammeController(ProgrammeService programmeService) {
-		this.programmeService = programmeService;
-	}
+	private ProgrammeService programmeService;
 	
 	@GetMapping(path = "/get")
-	public @ResponseBody List<ProgrammeResponseDto> getAll() {
+	public List<ProgrammeResponseDto> getAll() {
 		return programmeService.getAll();
 	}
 }
