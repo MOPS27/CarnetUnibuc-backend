@@ -15,11 +15,17 @@ import com.reportcard.project.exceptions.DuplicateItemException;
 import com.reportcard.project.model.Programme;
 import com.reportcard.project.repositories.ProgrammeRepository;
 
+
+import javax.validation.Validator;
+
 @Service
 public class ProgrammeService {
 
 	@Autowired
 	ProgrammeRepository programmeRepository;
+
+	@Autowired
+    private Validator validator;
 	
 	ModelMapper modelMapper = new ModelMapper();
 	
@@ -36,7 +42,9 @@ public class ProgrammeService {
 		return returnValue;
 	}
 	
-	public ProgrammeResponseDto create(@Valid ProgrammeRequestDto request) throws DuplicateItemException {
+	public ProgrammeResponseDto create(ProgrammeRequestDto request) throws DuplicateItemException {
+		
+		//validator.validate(request);
 		
 		Programme programme = modelMapper.map(request, Programme.class);
 		
