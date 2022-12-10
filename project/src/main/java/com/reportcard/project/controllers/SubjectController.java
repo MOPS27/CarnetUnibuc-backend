@@ -22,46 +22,46 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.reportcard.project.dtos.CourseRequestDto;
-import com.reportcard.project.dtos.CourseResponseDto;
+import com.reportcard.project.dtos.SubjectRequestDto;
+import com.reportcard.project.dtos.SubjectResponseDto;
 import com.reportcard.project.exceptions.DuplicateItemException;
-import com.reportcard.project.services.CourseService;
+import com.reportcard.project.services.SubjectService;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/courses")
-public class CourseController {
+@RequestMapping("/subjects")
+public class SubjectController {
 
 	@Autowired
-	private CourseService courseService;
+	private SubjectService subjectService;
 	
 	@GetMapping
-	public List<CourseResponseDto> getAll() {
-		return courseService.getAll();
+	public List<SubjectResponseDto> getAll() {
+		return subjectService.getAll();
 	}
 	
 	@PostMapping
-	public ResponseEntity<CourseResponseDto>  create(@Valid @RequestBody CourseRequestDto request) throws URISyntaxException, DuplicateItemException{
-		var response = courseService.create(request);
+	public ResponseEntity<SubjectResponseDto> create(@Valid @RequestBody SubjectRequestDto request) throws URISyntaxException, DuplicateItemException{
+		var response = subjectService.create(request);
 
 		HttpHeaders responseHeaders = new HttpHeaders();
-		responseHeaders.setLocation(new URI(String.format("/courses/%s", response.getId())));
+		responseHeaders.setLocation(new URI(String.format("/subjects/%s", response.getId())));
 
-		return new ResponseEntity<CourseResponseDto>(response, responseHeaders, HttpStatus.CREATED);
+		return new ResponseEntity<SubjectResponseDto>(response, responseHeaders, HttpStatus.CREATED);
 	}
 	
 	
 	@PutMapping(path = "/update/{objectId}", consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = {
 			MediaType.APPLICATION_JSON_VALUE })
-	public List<CourseResponseDto> updateCourse(@PathVariable String objectId,
-			@RequestBody CourseResponseDto courseDto) {
-		return courseService.getAll();
+	public List<SubjectResponseDto> updateSubject(@PathVariable String objectId,
+			@RequestBody SubjectResponseDto subjectDto) {
+		return subjectService.getAll();
 	}
 	
 	@DeleteMapping(path = "/delete/{objectId}", consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = {
 			MediaType.APPLICATION_JSON_VALUE })
-	public List<CourseResponseDto> deleteCourse(@PathVariable String objectId) {
-		return courseService.getAll();
+	public List<SubjectResponseDto> deleteSubject(@PathVariable String objectId) {
+		return subjectService.getAll();
 	}
 	
 }

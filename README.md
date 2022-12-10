@@ -1,8 +1,16 @@
 # CarnetUnibuc-backend
 University management program - backend
 
+```
+courses = curs
+subject = materie
+in diagrama, courses = subjects =  materii
+si tabelul ala CourseProfessor e defapt courses de la noi
+un curs este o instanta a unei materii tinuta de un anume prof intr-un anumit an
+```
+
 # APIs
-1. POST http://localhost:8080/courses
+1. POST http://localhost:8080/subjects
    Create a course
    Send a JSON like this one
    ```
@@ -11,8 +19,21 @@ University management program - backend
         "creditCount": 12
     }
    ```
-2. GET http://localhost:8080/courses - Get the list of cousers
-3. GET http://localhost:8080/courses/1 - Get ONE course by id 
+2. GET http://localhost:8080/subjects - Get the list of cousers
+3. GET http://localhost:8080/subjects/1 - Get ONE course by id 
+4. GET http://localhost:8080/students - Get the list of cousers
+5. POST http://localhost:8080/students - Add students from a JSON like this one (you can add duplicates, but in the DB will be only unique names) - returns the list with all the students from DB
+   ```
+   [
+    {
+        "name":"ionel"
+    },
+    {
+        "name":"gigel"
+    }
+]
+   ```
+6. 
 
 
 

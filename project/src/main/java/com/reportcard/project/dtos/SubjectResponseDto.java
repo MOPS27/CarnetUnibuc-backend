@@ -1,6 +1,6 @@
 package com.reportcard.project.dtos;
 
-public class CourseResponseDto {
+public class SubjectResponseDto {
 
 	private int id;
 	private String name;

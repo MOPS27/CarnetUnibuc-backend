@@ -6,21 +6,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.Min;
 
 @Entity
-@Table(name="courses")
-public class Course {
-	
+@Table(name="students")
+public class Student {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
 	@Column(nullable = false, length = 100, unique = true)
 	private String name;
-	
-	@Min(value = 0)
-	private Integer creditCount;
 
 	public Integer getId() {
 		return id;
@@ -36,14 +32,6 @@ public class Course {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public Integer getCreditCount() {
-		return creditCount;
-	}
-
-	public void setCreditCount(Integer creditCount) {
-		this.creditCount = creditCount;
 	}
 	
 }
