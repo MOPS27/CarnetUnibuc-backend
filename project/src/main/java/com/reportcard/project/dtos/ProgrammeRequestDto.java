@@ -1,26 +1,31 @@
 package com.reportcard.project.dtos;
 
-public class ProgrammeResponseDto {
-	private Integer id;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
+
+public class ProgrammeRequestDto {
+
+	@NotBlank
+	@Size(max = 100)
 	private String name;
+
+	@Positive
 	private Integer numberOfYears;
-	public Integer getId() {
-		return id;
-	}
-	public void setId(Integer id) {
-		this.id = id;
-	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public Integer getNumberOfYears() {
 		return numberOfYears;
 	}
+
 	public void setNumberOfYears(Integer numberOfYears) {
 		this.numberOfYears = numberOfYears;
 	}
-	
 }

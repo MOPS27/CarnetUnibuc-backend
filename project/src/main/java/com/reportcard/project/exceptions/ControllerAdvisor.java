@@ -23,7 +23,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
     	var body = new HashMap<String, String>();
     	body.put("message", ex.getMessage());
-
+    	
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
@@ -33,10 +33,10 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
     	var body = new HashMap<String, String>();
     	body.put("message", ex.getMessage());
-
+    	
         return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
-
+    
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
         MethodArgumentNotValidException ex, HttpHeaders headers,
