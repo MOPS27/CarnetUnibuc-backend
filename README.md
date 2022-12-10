@@ -4,18 +4,17 @@ University management program - backend
 
 # APIs
 1. POST http://localhost:8080/subjects
-   Create a course
-   Send a JSON like this one
+   Creare materie
    ```
    {
         "name": "Curs 3",
         "creditCount": 12
     }
    ```
-2. GET http://localhost:8080/subjects - Get the list of cousers
-3. GET http://localhost:8080/subjects/1 - Get ONE course by id 
-4. GET http://localhost:8080/students - Get the list of cousers
-5. POST http://localhost:8080/students - Add students from a JSON like this one (you can add duplicates, but in the DB will be only unique names) - returns the list with all the students from DB
+2. GET http://localhost:8080/subjects - lista de materii
+3. GET http://localhost:8080/subjects/1 - afiseaza o materie dupa id 
+4. GET http://localhost:8080/students - lista studentilor
+5. POST http://localhost:8080/students - adaugare lista studenti in DB (pot fi adaugate si duplicate nu vor fi luate in considerare), si creare automata a grupelor in DB
    ```
    [
     {
@@ -45,7 +44,7 @@ University management program - backend
             "groupCode": 123
         }
     }
-]
+   ]
    ```
 6. 
 
