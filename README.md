@@ -1,6 +1,21 @@
 # CarnetUnibuc-backend
 University management program - backend
 
+# APIs
+1. POST http://localhost:8080/courses
+   Create a course
+   Send a JSON like this one
+   ```
+   {
+        "name": "Curs 3",
+        "creditCount": 12
+    }
+   ```
+2. GET http://localhost:8080/courses - Get the list of cousers
+3. GET http://localhost:8080/courses/1 - Get ONE course by id 
+
+
+
 ## Configuration steps for MySQL local database
 ### MySQL commnad line client
 ### MySQL Workbench

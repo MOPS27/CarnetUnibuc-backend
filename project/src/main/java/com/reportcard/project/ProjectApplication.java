@@ -3,6 +3,7 @@ package com.reportcard.project;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+
 @SpringBootApplication
 public class ProjectApplication {
 
@@ -10,4 +11,4 @@ public class ProjectApplication {
 		SpringApplication.run(ProjectApplication.class, args);
 	}
 
-}
+}	
