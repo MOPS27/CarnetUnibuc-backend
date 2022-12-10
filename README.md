@@ -1,13 +1,6 @@
 # CarnetUnibuc-backend
 University management program - backend
 
-```
-courses = curs
-subject = materie
-in diagrama, courses = subjects =  materii
-si tabelul ala CourseProfessor e defapt courses de la noi
-un curs este o instanta a unei materii tinuta de un anume prof intr-un anumit an
-```
 
 # APIs
 1. POST http://localhost:8080/subjects
@@ -31,7 +24,7 @@ un curs este o instanta a unei materii tinuta de un anume prof intr-un anumit an
     {
         "name":"gigel"
     }
-]
+   ]
    ```
 6. 
 
