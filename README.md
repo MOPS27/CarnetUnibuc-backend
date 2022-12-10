@@ -19,12 +19,33 @@ University management program - backend
    ```
    [
     {
-        "name":"ionel"
+        "lastName":"marcel",
+        "firstName":"ionel",
+        "email":"gigel@gigeal.com",
+        "group":
+        {
+            "groupCode": 123
+        }
     },
     {
-        "name":"gigel"
+        "lastName":"maricica",
+        "firstName":"ionel",
+        "email":"maricica@gmail.com",
+        "group":
+        {
+            "groupCode": 124
+        }
+    },
+    {
+        "lastName":"valetin",
+        "firstName":"ana",
+        "email":"ana@yahoo.com",
+        "group":
+        {
+            "groupCode": 123
+        }
     }
-   ]
+]
    ```
 6. 
 

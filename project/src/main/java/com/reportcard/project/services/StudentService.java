@@ -9,9 +9,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.reportcard.project.dtos.GroupResponseDto;
 import com.reportcard.project.dtos.StudentRequestDto;
 import com.reportcard.project.dtos.StudentResponseDto;
 import com.reportcard.project.exceptions.DuplicateItemException;
+import com.reportcard.project.model.Group;
 import com.reportcard.project.model.Student;
 import com.reportcard.project.repositories.StudentRepository;
 
@@ -20,6 +22,9 @@ public class StudentService {
 
 	@Autowired
 	StudentRepository studentRepository;
+	
+	@Autowired
+	GroupService groupService;
 
 	ModelMapper modelMapper = new ModelMapper();
 
@@ -54,12 +59,15 @@ public class StudentService {
 		Student studentEntity = modelMapper.map(student, Student.class);
 
 		try {
-		validateStudentNameUnique(student.getName());
+		validateStudentNameUnique(student.getEmail());
 		}
 		catch(DuplicateItemException e) {
 			continue;
 		}
-
+		GroupResponseDto groupDto = groupService.create(student.getGroup());// create and save
+		Group group = modelMapper.map(groupDto, Group.class);
+		studentEntity.setGroup(group);
+	
 		var createdStudent = studentRepository.save(studentEntity);
 		response.add(modelMapper.map(createdStudent, StudentResponseDto.class));
 		}
@@ -67,15 +75,15 @@ public class StudentService {
 		return response;
 	}
 
-	private void validateStudentNameUnique(String name) throws DuplicateItemException {
+	private void validateStudentNameUnique(String email) throws DuplicateItemException {
 
 		var all = studentRepository.findAll();
 
 		var any = all.stream()
-				.anyMatch(x -> x.getName().equals(name));
+				.anyMatch(x -> x.getEmail().equals(email));
 
 		if (any) {
-			throw new DuplicateItemException("Studentul", "numele", name);
+			throw new DuplicateItemException("Studentul", "email", email);
 		}
 	}
 }
