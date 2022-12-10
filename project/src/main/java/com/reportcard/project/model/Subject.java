@@ -1,10 +1,13 @@
 package com.reportcard.project.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 
@@ -23,6 +26,9 @@ public class Subject {
 	@Min(value = 0)
 	private Integer creditCount;
 
+	@OneToMany(mappedBy = "subject")
+	private List<Course> courses;
+	
 	public Integer getId() {
 		return id;
 	}
