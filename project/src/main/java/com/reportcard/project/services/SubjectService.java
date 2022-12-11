@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.reportcard.project.dtos.CourseResponseDto;
 import com.reportcard.project.dtos.SubjectRequestDto;
 import com.reportcard.project.dtos.SubjectResponseDto;
 import com.reportcard.project.exceptions.DuplicateItemException;
@@ -25,7 +26,6 @@ public class SubjectService {
 
 	public List<SubjectResponseDto> getAll() {
 		List<SubjectResponseDto> returnValue = new ArrayList<>();
-
 
 		List<Subject> subjects = subjectRepository.findAll();
 
@@ -51,8 +51,7 @@ public class SubjectService {
 
 		var all = subjectRepository.findAll();
 
-		var any = all.stream()
-				.anyMatch(x -> x.getName().equals(name));
+		var any = all.stream().anyMatch(x -> x.getName().equals(name));
 
 		if (any) {
 			throw new DuplicateItemException("Materia", "denumirea", name);
