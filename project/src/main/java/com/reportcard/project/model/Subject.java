@@ -53,4 +53,12 @@ public class Subject {
 		this.creditCount = creditCount;
 	}
 	
+	public List<Course> getCourses() {
+		return this.courses;
+	}
+	
+	public void setCourses(List<Course> courses) {
+		this.courses = courses;
+	}
+	
 }

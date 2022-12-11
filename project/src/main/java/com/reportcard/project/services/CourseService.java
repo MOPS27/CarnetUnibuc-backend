@@ -44,14 +44,26 @@ public class CourseService {
 	}
 	
 	public List<CourseResponseDto> getAll() {
-		
-		var y = courseRepository.findAll();
-		
-		return y
+		return courseRepository.findAll()
 				.stream()
 				.map(x -> modelMapper.map(x, CourseResponseDto.class))
 				.collect(Collectors.toList());
 	}
+	
+	public List<CourseResponseDto> getBySubject(int subjectId) throws NotFoundException {
+		
+		var subject = subjectRepository.findById(subjectId);
+		
+		if(subject.isEmpty()) {
+			throw new NotFoundException("Materia", "id", Integer.toString(subjectId));
+		}
+		
+		return subject.get().getCourses()
+				.stream()
+				.map(x -> modelMapper.map(x, CourseResponseDto.class))
+				.collect(Collectors.toList());
+	}
+	
 	
 	public CourseResponseDto create(CourseRequestDto request) throws NotFoundException {
 		
