@@ -115,7 +115,7 @@ public class SubjectTests {
 		var subjects = new ArrayList<Subject>();
 		subjects.add(new Subject(){{
 			setId(1);
-			setName("Materia y");
+			setName("Materia x");
 			setCreditCount(3);
 		}});
 		
