@@ -77,7 +77,7 @@ public class SubjectTests {
 	void subject_create() throws DuplicateItemException {
 		
 		var request = new SubjectRequestDto() {{
-			setName(null);
+			setName("name");
 			setCreditCount(3);
 		}};
 		

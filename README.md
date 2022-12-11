@@ -46,7 +46,17 @@ University management program - backend
     }
    ]
    ```
-6. 
+6. POST http://localhost:8080/courses/{id}/groups/{groupId}
+
+adauga studentii unei grupe la un curs
+
+daca unul dintre studentii grupei deja e inscris la curs, e ok, doar se asigura ca nu e duplicat
+
+7. POST http://localhost:8080/courses/{id}/students/{studentId}
+
+adauga studentul la un curs
+
+daca studentul e deja inscris la curs, intoarce statuscode 409
 
 
 
