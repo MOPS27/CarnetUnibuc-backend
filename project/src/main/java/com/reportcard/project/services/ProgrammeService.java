@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.reportcard.project.dtos.ProgrammeRequestDto;
 import com.reportcard.project.dtos.ProgrammeResponseDto;
 import com.reportcard.project.exceptions.DuplicateItemException;
+import com.reportcard.project.exceptions.NotFoundException;
 import com.reportcard.project.model.Programme;
 import com.reportcard.project.repositories.ProgrammeRepository;
 
@@ -63,5 +64,15 @@ public class ProgrammeService {
 		if (any) {
 			throw new DuplicateItemException("Programul de studiu", "denumirea", name);
 		}
+	}
+	
+	public void delete(Integer id) throws NotFoundException {
+		var programme = programmeRepository.findById(id);
+		
+		if(programme.isEmpty()) {
+			throw new NotFoundException("Programul de studiu", "id", id.toString());
+		}
+		
+		programmeRepository.delete(programme.get());
 	}
 }
