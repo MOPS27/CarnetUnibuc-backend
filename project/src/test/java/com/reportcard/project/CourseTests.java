@@ -105,6 +105,70 @@ class CourseTests {
 	}
 	
 	@Test
+	void course_getSubjects() throws NotFoundException {
+		
+		var subject = new Subject() {{
+			setId(1);
+			setName("subj1");
+			setCreditCount(5);
+		}};
+		
+		List<Course> courses = new ArrayList<Course>();
+		courses.add(new Course() {{ 
+			setId(1);
+			setSubject(subject);
+			setProfessorName("prof1");
+			setCalendarYearName("2022-2023"); 
+			}});
+		courses.add(new Course() {{ 
+			setId(2);
+			setSubject(subject);
+			setProfessorName("prof2");
+			setCalendarYearName("2022-2023"); 
+			}});
+		
+		subject.setCourses(courses);
+		
+		when(subjectRepositoryMock.findById(1)).thenReturn(Optional.of(subject));
+
+		List<CourseResponseDto> response = courseService.getBySubject(1);
+		
+		assertNotNull(response);
+		assertEquals(2, response.size());
+		
+		List<CourseResponseDto> expected = courses.stream()
+				.map(p -> new CourseResponseDto() {{ 
+					setId(p.getId());
+					setProfessorName(p.getProfessorName());
+					setSubjectName(subject.getName());
+					setCalendarYearName(p.getCalendarYearName());
+				}})
+				.collect(Collectors.toList());
+		
+		assertThat(response)
+			.usingRecursiveComparison()
+			.isEqualTo(expected);
+	}
+	
+	@Test
+	void course_getSubjects_throwsNotFound_whenSubjectNotExists() throws NotFoundException {
+				
+		when(subjectRepositoryMock.findById(1)).thenReturn(Optional.empty());
+
+		var exception = assertThrows(NotFoundException.class, () -> { 
+			courseService.getBySubject(1);
+		});
+
+		var expectedMessage = String.format("%s cu %s = %s nu exista in baza de date", 
+				"Materia", "id", Integer.toString(1));
+		var actualMessage = exception.getMessage();
+		
+		assertEquals(expectedMessage, actualMessage);
+		
+	}
+	
+	
+	@Test
 	void course_create() throws NotFoundException {
 		
 		var subject = new Subject() {{
