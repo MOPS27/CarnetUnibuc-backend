@@ -1,5 +1,7 @@
 package com.reportcard.project.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -7,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
@@ -23,11 +26,12 @@ public class Course {
 	@Column(nullable=false, length = 100)
 	private String professorName;
 	
-	//private int subjectId;
-
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "subject_id", referencedColumnName = "id", nullable = false)
 	private Subject subject;
+	
+	@ManyToMany
+	private List<Student> students;
 	
 	@NotBlank
 	@Column(nullable=false, length = 100)
@@ -64,5 +68,15 @@ public class Course {
 	public void setSubject(Subject subject) {
 		this.subject = subject;
 	}
+
+	public List<Student> getStudents() {
+		return students;
+	}
+
+	public void setStudents(List<Student> students) {
+		this.students = students;
+	}
+	
+	
 	
 }

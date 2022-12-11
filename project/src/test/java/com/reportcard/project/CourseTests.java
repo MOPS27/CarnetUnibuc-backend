@@ -10,6 +10,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,28 +24,19 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.reportcard.project.dtos.CourseRequestDto;
 import com.reportcard.project.dtos.CourseResponseDto;
-import com.reportcard.project.dtos.ProgrammeRequestDto;
-import com.reportcard.project.dtos.ProgrammeResponseDto;
+import com.reportcard.project.dtos.StudentResponseDto;
 import com.reportcard.project.exceptions.DuplicateItemException;
 import com.reportcard.project.exceptions.NotFoundException;
 import com.reportcard.project.model.Course;
-import com.reportcard.project.model.Programme;
+import com.reportcard.project.model.Group;
+import com.reportcard.project.model.Student;
 import com.reportcard.project.model.Subject;
 import com.reportcard.project.repositories.CourseRepository;
+import com.reportcard.project.repositories.GroupRepository;
+import com.reportcard.project.repositories.StudentRepository;
 import com.reportcard.project.repositories.SubjectRepository;
 import com.reportcard.project.services.CourseService;
-
-//@TestConfiguration
-//class ValidatorConfiguration {
-//	@Bean
-//	@Primary
-//	Validator getValidator() {
-//		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-//		return factory.getValidator();
-//	}
-//}
-
-//@Import(ValidatorConfiguration.class)
+		
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
 class CourseTests {
@@ -54,6 +46,12 @@ class CourseTests {
 	
 	@Mock
 	private SubjectRepository subjectRepositoryMock;
+	
+	@Mock
+	private GroupRepository groupRepositoryMock;
+	
+	@Mock
+	private StudentRepository studentRepositoryMock;
 	
 	
 	@InjectMocks
@@ -172,4 +170,136 @@ class CourseTests {
 		
 	}
 
+	
+	@Test
+	void addGroup() throws NotFoundException {
+		
+		var course = new Course() {{ 
+			setId(1);
+			setProfessorName("prof1");
+			setCalendarYearName("2022-2023");
+			setStudents(new ArrayList<Student>());
+			}};
+			
+		when(courseRepositoryMock.findById(any(Integer.class)))
+			.thenReturn(Optional.of(course));
+		
+		var group = new Group() {{ 
+			setId(1);
+			setGroupCode(344);
+			}};
+		
+		List<Student> students = Arrays.asList(
+			new Student() {{
+				setId(1);
+				setEmail("stud1@unibuc.ro");
+				setGroup(group);
+				setFirstName("stud1");
+				setLastName("stud1");
+			}},
+			new Student() {{
+				setId(2);
+				setEmail("stud2@unibuc.ro");
+				setGroup(group);
+				setFirstName("stud2");
+				setLastName("stud2");
+			}});
+		
+		group.setStudents(students);
+			
+		when(groupRepositoryMock.findById(any(Integer.class)))
+			.thenReturn(Optional.of(group));
+		
+		when(courseRepositoryMock.save(any(Course.class))).thenReturn(new Course() {{
+			setId(1);
+			setProfessorName("prof1");
+			setCalendarYearName("2022-2023");
+			setStudents(students);
+		}});
+		
+		var response = courseService.addGroup(1, 1);
+		
+		assertNotNull(response);
+		assertEquals(2, response.getStudents().size());
+		
+		// ignore group for test purposes
+		response.getStudents().forEach(x -> x.setGroup(null));
+		
+		List<StudentResponseDto> expectedStudents = students.stream()
+				.map(x -> new StudentResponseDto() {{
+					setId(x.getId());
+					setEmail(x.getEmail());
+					setFirstName(x.getFirstName());
+					setLastName(x.getLastName());
+				}})
+				.collect(Collectors.toList());
+		
+		var expected = new CourseResponseDto() {{ 
+			setId(course.getId());
+			setProfessorName(course.getProfessorName());
+			setCalendarYearName(course.getCalendarYearName());
+			setStudents(expectedStudents);
+		}};	
+		
+		assertThat(response)
+			.usingRecursiveComparison()
+			.isEqualTo(expected);
+	}
+
+	@Test
+	void addStudent() throws NotFoundException, DuplicateItemException {
+		
+		var course = new Course() {{ 
+			setId(1);
+			setProfessorName("prof1");
+			setCalendarYearName("2022-2023");
+			setStudents(new ArrayList<Student>());
+			}};
+			
+		when(courseRepositoryMock.findById(any(Integer.class)))
+			.thenReturn(Optional.of(course));
+		
+		var student = new Student() {{
+				setId(1);
+				setEmail("stud1@unibuc.ro");
+				setFirstName("stud1");
+				setLastName("stud1");
+			}};
+			
+		when(studentRepositoryMock.findById(any(Integer.class)))
+			.thenReturn(Optional.of(student));
+		
+		when(courseRepositoryMock.save(any(Course.class))).thenReturn(new Course() {{
+			setId(1);
+			setProfessorName("prof1");
+			setCalendarYearName("2022-2023");
+			setStudents(Arrays.asList(student));
+		}});
+		
+		var response = courseService.addStudent(1, 1);
+		
+		assertNotNull(response);
+		assertEquals(1, response.getStudents().size());
+		
+		// ignore group for test purposes
+		response.getStudents().forEach(x -> x.setGroup(null));
+		
+		var expectedStudent = new StudentResponseDto() {{
+			setId(student.getId());
+			setEmail(student.getEmail());
+			setFirstName(student.getFirstName());
+			setLastName(student.getLastName());
+		}};
+			
+		var expected = new CourseResponseDto() {{ 
+			setId(course.getId());
+			setProfessorName(course.getProfessorName());
+			setCalendarYearName(course.getCalendarYearName());
+			setStudents(Arrays.asList(expectedStudent));
+		}};	
+		
+		assertThat(response)
+			.usingRecursiveComparison()
+			.isEqualTo(expected);
+	}
 }

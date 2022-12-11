@@ -1,5 +1,7 @@
 package com.reportcard.project.model;
 
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -7,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -30,6 +33,9 @@ public class Student {
 	@OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "group_id", referencedColumnName = "id")
     private Group group;
+	
+	@ManyToMany
+	private List<Course> courses;
 
 	public Integer getId() {
 		return id;
@@ -71,6 +77,13 @@ public class Student {
 		this.group = group;
 	}
 
-	
+
+	public List<Course> getCourses() {
+		return courses;
+	}
+
+	public void setCourses(List<Course> courses) {
+		this.courses = courses;
+	}
 	
 }
