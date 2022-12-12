@@ -2,6 +2,7 @@ package com.reportcard.project.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -13,7 +14,12 @@ import com.reportcard.project.dtos.CourseResponseDto;
 import com.reportcard.project.dtos.SubjectRequestDto;
 import com.reportcard.project.dtos.SubjectResponseDto;
 import com.reportcard.project.exceptions.DuplicateItemException;
+import com.reportcard.project.exceptions.NotFoundException;
+import com.reportcard.project.model.Student;
+import com.reportcard.project.model.StudentCourse;
 import com.reportcard.project.model.Subject;
+import com.reportcard.project.repositories.StudentCourseRepository;
+import com.reportcard.project.repositories.StudentRepository;
 import com.reportcard.project.repositories.SubjectRepository;
 
 @Service
@@ -21,6 +27,12 @@ public class SubjectService {
 
 	@Autowired
 	SubjectRepository subjectRepository;
+	
+	@Autowired
+	StudentRepository studentRepository;
+	
+	@Autowired
+	StudentCourseRepository studentCourseRepository;
 
 	ModelMapper modelMapper = new ModelMapper();
 

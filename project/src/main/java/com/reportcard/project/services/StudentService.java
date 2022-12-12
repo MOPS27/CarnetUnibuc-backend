@@ -45,16 +45,6 @@ public class StudentService {
 		return returnValue;
 	}
 
-//	public StudentResponseDto create(@Valid StudentRequestDto request) throws DuplicateItemException {
-//
-//		Student Student = modelMapper.map(request, Student.class);
-//
-//		validateStudentNameUnique(request.getName());
-//
-//		var createdStudent = studentRepository.save(Student);
-//
-//		return modelMapper.map(createdStudent, StudentResponseDto.class);
-//	}
 	public List<StudentResponseDto> create(@Valid List<StudentRequestDto> request) {
 
 		List<StudentResponseDto> response = new ArrayList<>();

@@ -8,4 +8,5 @@ import com.reportcard.project.model.Student;
 @Repository
 public interface StudentRepository extends JpaRepository<Student, Integer> {
 
+	Student getById(Integer studentId);
 }

@@ -10,4 +10,5 @@ import com.reportcard.project.model.Programme;
 @Repository
 public interface CourseRepository extends JpaRepository<Course, Integer> {
 
+	Course getById(Integer courseId);
 }

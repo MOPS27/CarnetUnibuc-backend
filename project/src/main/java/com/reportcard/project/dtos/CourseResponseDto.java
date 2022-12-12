@@ -1,14 +1,11 @@
 package com.reportcard.project.dtos;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import com.reportcard.project.dtos.StudentResponseDto;
 
 public class CourseResponseDto {
 	private Integer id;
 	private String professorName;
-	private String subjectName;
+	private SubjectResponseDto subject;
 	private String calendarYearName;
 	private List<StudentResponseDto> students;
 	public Integer getId() {
@@ -23,11 +20,11 @@ public class CourseResponseDto {
 	public void setProfessorName(String professorName) {
 		this.professorName = professorName;
 	}
-	public String getSubjectName() {
-		return subjectName;
+	public SubjectResponseDto getSubject() {
+		return subject;
 	}
-	public void setSubjectName(String subjectName) {
-		this.subjectName = subjectName;
+	public void setSubject(SubjectResponseDto subject) {
+		this.subject = subject;
 	}
 	public String getCalendarYearName() {
 		return calendarYearName;

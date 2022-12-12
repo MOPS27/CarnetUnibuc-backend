@@ -42,18 +42,15 @@ public class CourseService {
 	
 	@Autowired
 	StudentRepository studentRepository;
-	
-	
-	@Autowired
-    private Validator validator;
+
 	
 	ModelMapper modelMapper = new ModelMapper();
 	
 	public CourseService() {
 		modelMapper.typeMap(Course.class, CourseResponseDto.class)
 			.addMappings(mapper -> {
-				mapper.map(src -> src.getSubject().getName(), 
-						   CourseResponseDto::setSubjectName);
+				mapper.map(src -> src.getSubject(), 
+						   CourseResponseDto::setSubject);
 				mapper.map(src -> { 
 							return src.getStudents() == null 
 									? new ArrayList<Student>()

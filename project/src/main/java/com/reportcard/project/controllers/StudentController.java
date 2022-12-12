@@ -30,18 +30,6 @@ public class StudentController {
 		return studentService.getAll();
 	}
 	
-//	@PostMapping
-//	public ResponseEntity<StudentResponseDto> create(@Valid @RequestBody StudentRequestDto request) 
-//	throws URISyntaxException, DuplicateItemException {
-//
-//		var response = studentService.create(request);
-//		
-//		HttpHeaders responseHeaders = new HttpHeaders();
-//		responseHeaders.setLocation(new URI(String.format("/students/%s", response.getId())));
-//		
-//		return new ResponseEntity<StudentResponseDto>(response, responseHeaders, HttpStatus.CREATED);
-//	}
-	// import a list of students from a JSON file
 	@PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = {
 			MediaType.APPLICATION_JSON_VALUE })
 	public List<StudentResponseDto> create(@Valid @RequestBody List<StudentRequestDto> request){
