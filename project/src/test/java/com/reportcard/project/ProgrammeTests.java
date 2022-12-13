@@ -56,7 +56,7 @@ class ProgrammeTests {
 		programmes.add(new Programme() {{ 
 			setId(1);
 			setName("name2");
-			setNumberOfYears(3); 
+			setNumberOfYears(3);
 			}});
 		programmes.add(new Programme() {{ 
 			setId(2);

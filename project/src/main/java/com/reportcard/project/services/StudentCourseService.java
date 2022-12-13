@@ -62,12 +62,14 @@ public class StudentCourseService {
 			throw new NotFoundException("Studentul", "id", Integer.toString(studentId));
 		}
 
-		List<StudentCourse> studentCourses = studentCourseRepository.findAllById(studentId);
+		List<StudentCourse> studentCourses = studentCourseRepository.findAll();
 		for(StudentCourse sc: studentCourses) {
+			if(sc.getStudent().getId() == studentId) {
 			SubjectsGradesResponseDto value = new SubjectsGradesResponseDto();
 			value.setGrade(sc.getGrade());
 			value.setSubject(modelMapper.map(sc.getCourse().getSubject(), SubjectResponseDto.class));
 			returnValue.add(value);
+			}
 		}
 		
 		return returnValue;

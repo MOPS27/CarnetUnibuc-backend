@@ -11,7 +11,7 @@ import com.reportcard.project.model.StudentCourse;
 @Repository
 public interface StudentCourseRepository extends JpaRepository<StudentCourse, Integer> {
 
-	List<StudentCourse> findAllById(int studentId);
+	List<StudentCourse> findAllByStudentId(Integer studentId);
 	StudentCourse getById(Integer studentCourseId);
 	List<StudentCourse> findAllByCourseId(int courseId);
 }

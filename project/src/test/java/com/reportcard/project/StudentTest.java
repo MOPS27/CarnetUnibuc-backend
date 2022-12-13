@@ -3,7 +3,9 @@ package com.reportcard.project;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -22,10 +24,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.reportcard.project.dtos.GroupRequestDto;
 import com.reportcard.project.dtos.GroupResponseDto;
+import com.reportcard.project.dtos.ProgrammeRequestDto;
 import com.reportcard.project.dtos.StudentRequestDto;
 import com.reportcard.project.dtos.StudentResponseDto;
 import com.reportcard.project.exceptions.DuplicateItemException;
 import com.reportcard.project.model.Group;
+import com.reportcard.project.model.Programme;
 import com.reportcard.project.model.Student;
 import com.reportcard.project.repositories.GroupRepository;
 import com.reportcard.project.repositories.StudentRepository;
@@ -149,7 +153,38 @@ public class StudentTest {
 			.isEqualTo(expected);
 	}
 	
-
+//	@Test
+//	void programme_create_throwsDuplicate_whenNameDuplicate() throws DuplicateItemException {
+//		
+//		var request = new ProgrammeRequestDto() {{
+//			setName("name");
+//			setNumberOfYears(3);
+//		}};
+//		
+//		var programmes = new ArrayList<Programme>();
+//		programmes.add(new Programme(){{
+//			setId(1);
+//			setName("name");
+//			setNumberOfYears(3);
+//		}});
+//		
+//		when(programmeRepositoryMock.findAll()).thenReturn(programmes);
+//		
+//		var exception = assertThrows(DuplicateItemException.class, () -> { 
+//			programmeService.create(request);
+//		});
+//		
+//		var expectedMessage = String.format("%s cu %s = %s deja exista", 
+//				"Programul de studiu", 
+//				"denumirea", 
+//				request.getName());
+//		var actualMessage = exception.getMessage();
+//		
+//		assertEquals(expectedMessage, actualMessage);
+//		
+//		verify(programmeRepositoryMock, never()).save(any(Programme.class));
+//		
+//	}
 	
 	
 }
