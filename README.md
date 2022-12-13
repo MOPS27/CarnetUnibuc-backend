@@ -69,6 +69,7 @@ daca adaugarea are loc cu succes intoarce lista studentilor inscrisi la curs
    ```
 9. GET http://localhost:8080/grades/{studentId} - ia notele si materiile pe un student dat
 10. GET http://localhost:8080/courses/2 - lista de studneti pt un curs dat cu note si grupa fiecare
+11. POST http://localhost:8080/courses/{courseId}/groups/{groupId} - adauga studentii dintr-o anumita grupa la un anumit curd
 
 
 ## Configuration steps for MySQL local database

@@ -121,12 +121,12 @@ public class CourseService {
 		return modelMapper.map(createdCourse, CourseResponseDto.class);
 	}
 	
-	public CourseResponseDto addGroup(int id, int groupId) throws NotFoundException {
+	public void addGroup(Integer courseId, Integer groupId) throws NotFoundException, DuplicateItemException {
 		
-		var courseOptional = courseRepository.findById(id);
+		var courseOptional = courseRepository.findById(courseId);
 
 		if(courseOptional.isEmpty()) {
-			throw new NotFoundException("Cursul", "id", Integer.toString(id));
+			throw new NotFoundException("Cursul", "id", Integer.toString(courseId));
 		}
 		
 		var course = courseOptional.get();
@@ -137,22 +137,12 @@ public class CourseService {
 			throw new NotFoundException("Grupa", "id", Integer.toString(groupId));
 		}
 		
-		//var courseStudents = course.getStudents();
 		
-		var groupStudents = group.get().getStudents();
+		List<Student> listStudentsFromOneGroup = studentRepository.findAllByGroupId(groupId);
 		
-		// join already existing students with newly added students
-		// and remove duplicate students
-//		List<Student> newCourseStudents = Stream.concat(courseStudents.stream(), groupStudents.stream())
-//                .collect(collectingAndThen(
-//                			toCollection(() -> new TreeSet<>(comparingInt(Student::getId))),
-//                			ArrayList::new));
-		
-		//course.setStudents(newCourseStudents);
-
-		var updatedCourse = courseRepository.save(course);
-		
-		return modelMapper.map(updatedCourse, CourseResponseDto.class);
+		for(Student s: listStudentsFromOneGroup) {
+			addStudentToCourse(courseId, s.getId());
+		}
 		
 	}
 	

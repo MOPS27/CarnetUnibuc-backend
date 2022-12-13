@@ -72,16 +72,18 @@ public class CourseController {
 		return new ResponseEntity<CourseResponseDto>(response, responseHeaders, HttpStatus.CREATED);
 	}
 	
-	@PostMapping("/{id}/groups/{groupId}")
-	public ResponseEntity<CourseResponseDto> addGroup(@PathVariable int id, @PathVariable int groupId) 
-	throws URISyntaxException, NotFoundException {
+	@PostMapping("/{courseId}/groups/{groupId}")
+	public List<StudentsGradesForOneCoursesResponseDto> addGroup(@PathVariable int courseId, @PathVariable int groupId) 
+	throws URISyntaxException, NotFoundException, DuplicateItemException {
 
-		var response = courseService.addGroup(id, groupId);
-		
-		var responseHeaders = new HttpHeaders();
-		responseHeaders.setLocation(new URI(String.format("/courses/%s", response.getId())));
-		
-		return new ResponseEntity<CourseResponseDto>(response, responseHeaders, HttpStatus.CREATED);
+//		var response = courseService.addGroup(courseId, groupId);
+//		
+//		var responseHeaders = new HttpHeaders();
+//		responseHeaders.setLocation(new URI(String.format("/courses/%s", response.getId())));
+//		
+//		return new ResponseEntity<CourseResponseDto>(response, responseHeaders, HttpStatus.CREATED);
+		courseService.addGroup(courseId, groupId);
+		return getAllStudentsAndGrades(courseId);
 	}
 	
 	@PostMapping("/{id}/students/{studentId}")
