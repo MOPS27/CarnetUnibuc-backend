@@ -104,7 +104,7 @@ public class StudentCourseService {
 		}
 		
 		StudentCourse createdVal = null;
-		var result = validateUnique(courseId, studentId);
+		var result = validateUnique( studentId, courseId);
 		if(result == null) {
 			// nu exista => creez unul nou
 			val.setStudent(student);
