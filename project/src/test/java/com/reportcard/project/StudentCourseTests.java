@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -33,6 +34,8 @@ import org.springframework.test.context.ContextConfiguration;
 
 import com.reportcard.project.dtos.CourseResponseDto;
 import com.reportcard.project.dtos.GroupRequestDto;
+import com.reportcard.project.dtos.ProgrammeRequestDto;
+import com.reportcard.project.dtos.ProgrammeResponseDto;
 import com.reportcard.project.dtos.StudentCourseRequestDto;
 import com.reportcard.project.dtos.StudentCourseResponseDto;
 import com.reportcard.project.dtos.StudentRequestDto;
@@ -41,6 +44,7 @@ import com.reportcard.project.exceptions.DuplicateItemException;
 import com.reportcard.project.exceptions.NotFoundException;
 import com.reportcard.project.model.Course;
 import com.reportcard.project.model.Group;
+import com.reportcard.project.model.Programme;
 import com.reportcard.project.model.Student;
 import com.reportcard.project.model.StudentCourse;
 import com.reportcard.project.model.Subject;
@@ -152,6 +156,28 @@ public class StudentCourseTests {
 	@Test
 	void studentCourse_create() throws DuplicateItemException, NotFoundException {
 		
+		var student = new Student() {{
+			setId(1);
+			setLastName("Studentul a");
+			setFirstName("b");
+			setEmail("studentab@gmail.com");
+			setGroup(new Group() {{
+					setGroupCode(123);
+					}});
+		}};
+		
+		var subject = new Subject() {{
+			setId(1);
+			setName("subj2");
+			setCreditCount(5);
+		}};
+		var course = new Course() {{
+			setId(1);
+			setSubject(subject);
+			setProfessorName("prof2");
+			setCalendarYearName("2022-2023"); 
+		}};
+		
 		var request = new StudentCourseRequestDto() {{
 			setStudentId(1);
 			setCourseId(1);
@@ -160,176 +186,91 @@ public class StudentCourseTests {
 		
 		var savedStudentCourse = new StudentCourse() {{
 			setId(1);
-			setStudent(new Student() {{
-				setId(1);
-				setLastName("Studentul a");
-				setFirstName("b");
-				setEmail("studentab@gmail.com");
-				setGroup(new Group() {{
-						setGroupCode(123);
-						}});
-			}});
-			setCourse(new Course() {{
-				setId(1);
-				setSubject(new Subject() {{
-							setId(1);
-							setName("subj2");
-							setCreditCount(5);
-				}});
-				setProfessorName("prof2");
-				setCalendarYearName("2022-2023"); 
-			}});
+			setStudent(student);
+			setCourse(course);
 			setGrade(10);
 		}};
 		
+		when(studentRepositoryMock.getById(any(Integer.class))).thenReturn(student);
+		when(courseRepositoryMock.getById(any(Integer.class))).thenReturn(course);
+		when(studentCourseRepositoryMock.save(any(StudentCourse.class))).thenReturn(savedStudentCourse);
 		
-		Mockito.lenient().when(studentRepositoryMock.save(any(Student.class))).thenReturn(new Student());
-		Mockito.lenient().when(courseRepositoryMock.save(any(Course.class))).thenReturn(new Course());
-		Mockito.lenient().when(studentCourseRepositoryMock.save(any(StudentCourse.class))).thenReturn(savedStudentCourse);
-					
 		var response = studentCourseService.create(request);
 		
 		verify(studentCourseRepositoryMock).save(any(StudentCourse.class));
 		
 		var expected = new StudentCourseResponseDto() {{
-			System.out.println(savedStudentCourse.getId());
-			System.out.println(savedStudentCourse.getCourse());
-			System.out.println(savedStudentCourse.getStudent());
-			System.out.println(savedStudentCourse.getGrade());
 			setId(savedStudentCourse.getId());
-			setCourse(modelMapper.map(savedStudentCourse.getCourse(), CourseResponseDto.class));
 			setStudent(modelMapper.map(savedStudentCourse.getStudent(), StudentResponseDto.class));
+			setCourse(modelMapper.map(savedStudentCourse.getCourse(), CourseResponseDto.class));
 			setGrade(savedStudentCourse.getGrade());
 		}};
 		
 		assertThat(response)
 			.usingRecursiveComparison()
 			.isEqualTo(expected);
+		
 	}
 	
-//	@Test
-//	void studentCourse_create_throws_NotFound_whenNotFound() throws DuplicateItemException, NotFoundException {
-//		
-//		var request = new StudentCourseRequestDto() {{
-//			setStudentId(1);
-//			setCourseId(1);
-//			setGrade(10);
-//		}};
-//		
-//		var savedStudentCourse = new StudentCourse() {{
-//			setId(1);
-//			setStudent(new Student() {{
-//				setId(3);
-//				setLastName("Studentul a");
-//				setFirstName("b");
-//				setEmail("studentab@gmail.com");
-//				setGroup(new Group() {{
-//						setGroupCode(123);
-//						}});
-//			}});
-//			setCourse(new Course() {{
-//				setId(1);
-//				setSubject(new Subject() {{
-//							setId(1);
-//							setName("subj2");
-//							setCreditCount(5);
-//				}});
-//				setProfessorName("prof2");
-//				setCalendarYearName("2022-2023"); 
-//			}});
-//			setGrade(10);
-//		}};
-//		
-//		Student savedStudent = null;
-//		Mockito.lenient().when(studentRepositoryMock.save(any(Student.class))).thenReturn(savedStudent);
-//		Mockito.lenient().when(studentCourseRepositoryMock.save(any(StudentCourse.class))).thenReturn(savedStudentCourse);
-//		
-//		var exception = assertThrows( NotFoundException .class, () -> { 
-//			studentCourseService.create(request);
-//		});
-//		
-//		var expectedMessage = String.format("%s cu %s = %s nu exista in baza de date", 
-//				"Studentul", 
-//				"id", 
-//				"1");
-//		var actualMessage = exception.getMessage();
-//		
-//		assertEquals(expectedMessage, actualMessage);
-//		
-//		verify(studentCourseRepositoryMock, never()).save(any(StudentCourse.class));
-//			
-////		var response = studentCourseService.create(request);
-////		
-////		verify(studentCourseRepositoryMock).save(any(StudentCourse.class));
-////		
-////		var expected = new StudentCourseResponseDto() {{
-////			System.out.println(savedStudentCourse.getId());
-////			System.out.println(savedStudentCourse.getCourse());
-////			System.out.println(savedStudentCourse.getStudent());
-////			System.out.println(savedStudentCourse.getGrade());
-////			setId(savedStudentCourse.getId());
-////			setCourse(modelMapper.map(savedStudentCourse.getCourse(), CourseResponseDto.class));
-////			setStudent(modelMapper.map(savedStudentCourse.getStudent(), StudentResponseDto.class));
-////			setGrade(savedStudentCourse.getGrade());
-////		}};
-////		
-////		assertThat(response)
-////			.usingRecursiveComparison()
-////			.isEqualTo(expected);
-//	}
 	
-//	@Test
-//	void studentCourse_create_throwsDuplicate_whenNameDuplicate() throws DuplicateItemException {
-//		
-//
-//		var request = new StudentCourseRequestDto() {{
-//			setStudentId(1);
-//			setCourseId(1);
-//			setGrade(10);
-//		}};
-//		
-//		var savedStudentCourse = new StudentCourse() {{
-//			setId(1);
-//			setStudent(new Student() {{
-//				setId(1);
-//				setLastName("Studentul a");
-//				setFirstName("b");
-//				setEmail("studentab@gmail.com");
-//				setGroup(new Group() {{
-//						setGroupCode(123);
-//						}});
-//			}});
-//			setCourse(new Course() {{
-//				setId(1);
-//				setSubject(new Subject() {{
-//							setId(1);
-//							setName("subj2");
-//							setCreditCount(5);
-//				}});
-//				setProfessorName("prof2");
-//				setCalendarYearName("2022-2023"); 
-//			}});
-//			setGrade(10);
-//		}};
-//		
-//		Student savedStudent = null;
-//		when(studentRepositoryMock.save(any(Student.class))).thenReturn(savedStudent);
-//		when(studentCourseRepositoryMock.save(any(StudentCourse.class))).thenReturn(savedStudentCourse);
-//		
-//		var exception = assertThrows(DuplicateItemException.class, () -> { 
-//			studentCourseService.create(request);
-//		});
-//		
-//		var expectedMessage = String.format("%s cu %s = %s deja exista", 
-//				"Cursul", 
-//				"denumirea", 
-//				request.getCourseId().toString());
-//		var actualMessage = exception.getMessage();
-//		
-//		assertEquals(expectedMessage, actualMessage);
-//		
-//		verify(studentCourseRepositoryMock, never()).save(any(StudentCourse.class));
-//		
-//	}
+	@Test
+	void studentCourse_create_throws_NotFound_whenNotFound() throws DuplicateItemException, NotFoundException {
+		
+		var student = new Student() {{
+			setId(1);
+			setLastName("Studentul a");
+			setFirstName("b");
+			setEmail("studentab@gmail.com");
+			setGroup(new Group() {{
+					setGroupCode(123);
+					}});
+		}};
+		
+		var subject = new Subject() {{
+			setId(1);
+			setName("subj2");
+			setCreditCount(5);
+		}};
+		var course = new Course() {{
+			setId(1);
+			setSubject(subject);
+			setProfessorName("prof2");
+			setCalendarYearName("2022-2023"); 
+		}};
+		
+		var request = new StudentCourseRequestDto() {{
+			setStudentId(3);
+			setCourseId(1);
+			setGrade(10);
+		}};
+		
+		var savedStudentCourse = new StudentCourse() {{
+			setId(1);
+			setStudent(student);
+			setCourse(course);
+			setGrade(10);
+		}};
+		
+		
+		lenient().when(courseRepositoryMock.getById(any(Integer.class))).thenReturn(course);
+		lenient().when(studentCourseRepositoryMock.save(any(StudentCourse.class))).thenReturn(savedStudentCourse);
+		
+		var exception = assertThrows( NotFoundException .class, () -> { 
+			studentCourseService.create(request);
+		});
+		
+		var expectedMessage = String.format("%s cu %s = %s nu exista in baza de date", 
+				"Studentul", 
+				"id", 
+				"3");
+		var actualMessage = exception.getMessage();
+		
+		assertEquals(expectedMessage, actualMessage);
+		
+		verify(studentCourseRepositoryMock, never()).save(any(StudentCourse.class));
+			
+
+	}
+	
 
 }
