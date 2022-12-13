@@ -49,6 +49,7 @@ public class CourseController {
 		List<StudentCourse> list= courseService.getStudentsAndGradesByCourseId(courseId);
 		for(StudentCourse sc: list) {
 			StudentsGradesForOneCoursesResponseDto object = new StudentsGradesForOneCoursesResponseDto();
+			object.setId(sc.getStudent().getId());
 			object.setGrade(sc.getGrade());
 			object.setGroupNumber(sc.getStudent().getGroup().getGroupCode());
 			object.setEmail(sc.getStudent().getEmail());

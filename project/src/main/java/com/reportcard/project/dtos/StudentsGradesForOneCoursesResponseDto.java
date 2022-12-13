@@ -2,12 +2,19 @@ package com.reportcard.project.dtos;
 
 public class StudentsGradesForOneCoursesResponseDto {
 
+	private Integer id;
 	private Integer grade;
 	private String lastName;
 	private String firstName;
 	private String email;
 	private Integer groupNumber;
 	
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	public Integer getGrade() {
 		return grade;
 	}
