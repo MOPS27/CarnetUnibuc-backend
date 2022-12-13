@@ -38,17 +38,6 @@ import com.reportcard.project.model.Programme;
 import com.reportcard.project.repositories.ProgrammeRepository;
 import com.reportcard.project.services.ProgrammeService;
 
-//@TestConfiguration
-//class ValidatorConfiguration {
-//	@Bean
-//	@Primary
-//	Validator getValidator() {
-//		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-//		return factory.getValidator();
-//	}
-//}
-
-//@Import(ValidatorConfiguration.class)
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
 class ProgrammeTests {
