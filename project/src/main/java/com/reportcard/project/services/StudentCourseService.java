@@ -104,7 +104,7 @@ public class StudentCourseService {
 		}
 		
 		StudentCourse createdVal = null;
-		var result = validateUnique(course.getSubject().getName());
+		var result = validateUnique(courseId, studentId);
 		if(result == null) {
 			// nu exista => creez unul nou
 			val.setStudent(student);
@@ -119,18 +119,19 @@ public class StudentCourseService {
 	}
 	
 	public StudentCourse updateGrade(Integer studentCourseId, Integer grade){
+		System.out.println("StudentCourse id " + studentCourseId.toString());
 		StudentCourse sc = studentCourseRepository.getById(studentCourseId);
 		sc.setGrade(grade);
 
 		return studentCourseRepository.save(sc);
 	}
 	
-	private Integer validateUnique(String name) {
+	private Integer validateUnique(Integer studentId, Integer courseId) {
 
 		List<StudentCourse> all = studentCourseRepository.findAll();
 
 		for(StudentCourse sc : all) {
-			if(sc.getCourse().getSubject().getName().compareTo(name) == 0) {
+			if(sc.getCourse().getId() == courseId && sc.getId() == studentId) {
 				return sc.getId();
 			}
 		}
