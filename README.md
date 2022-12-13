@@ -57,6 +57,7 @@ daca unul dintre studentii grupei deja e inscris la curs, e ok, doar se asigura 
 adauga studentul la un curs
 
 daca studentul e deja inscris la curs, intoarce statuscode 409
+daca adaugarea are loc cu succes intoarce lista studentilor inscrisi la curs
 
 8. POST http://localhost:8080/grades - adauga nota unui student la un anumit curs (nu accepta duplicate la aceleasi materii)
    ```
@@ -67,6 +68,7 @@ daca studentul e deja inscris la curs, intoarce statuscode 409
     }
    ```
 9. GET http://localhost:8080/grades/{studentId} - ia notele si materiile pe un student dat
+10. GET http://localhost:8080/courses/2 - lista de studneti pt un curs dat cu note si grupa fiecare
 
 
 ## Configuration steps for MySQL local database

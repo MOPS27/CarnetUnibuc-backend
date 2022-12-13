@@ -51,9 +51,9 @@ public class CourseController {
 			StudentsGradesForOneCoursesResponseDto object = new StudentsGradesForOneCoursesResponseDto();
 			object.setGrade(sc.getGrade());
 			object.setGroupNumber(sc.getStudent().getGroup().getGroupCode());
-			object.setStudentEmail(sc.getStudent().getEmail());
-			object.setStudentLastName(sc.getStudent().getLastName());
-			object.setSutdentFirstName(sc.getStudent().getFirstName());
+			object.setEmail(sc.getStudent().getEmail());
+			object.setLastName(sc.getStudent().getLastName());
+			object.setFirstName(sc.getStudent().getFirstName());
 			returnValue.add(object);
 		}
 		return returnValue;
@@ -84,14 +84,14 @@ public class CourseController {
 	}
 	
 	@PostMapping("/{id}/students/{studentId}")
-	public ResponseEntity<CourseResponseDto> addStudent(@PathVariable int id, @PathVariable int studentId) 
+	public  List<StudentsGradesForOneCoursesResponseDto> addStudent(@PathVariable int id, @PathVariable int studentId) 
 	throws URISyntaxException, NotFoundException, DuplicateItemException {
 
-		var response = courseService.addStudent(id, studentId);
+		courseService.addStudentToCourse(id, studentId);
 		
-		var responseHeaders = new HttpHeaders();
-		responseHeaders.setLocation(new URI(String.format("/courses/%s", response.getId())));
+//		var responseHeaders = new HttpHeaders();
+//		responseHeaders.setLocation(new URI(String.format("/courses/%s", response.getId())));
 		
-		return new ResponseEntity<CourseResponseDto>(response, responseHeaders, HttpStatus.CREATED);
+		return getAllStudentsAndGrades(id);
 	}
 }

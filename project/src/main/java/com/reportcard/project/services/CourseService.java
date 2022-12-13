@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import com.reportcard.project.dtos.CourseRequestDto;
 import com.reportcard.project.dtos.CourseResponseDto;
+import com.reportcard.project.dtos.StudentResponseDto;
 import com.reportcard.project.dtos.SubjectResponseDto;
 import com.reportcard.project.dtos.SubjectsGradesResponseDto;
 import com.reportcard.project.exceptions.DuplicateItemException;
@@ -155,24 +156,34 @@ public class CourseService {
 		
 	}
 	
-	public CourseResponseDto addStudent(int id, int studentId) 
+	public void addStudentToCourse(int courseId, Integer studentId) 
 			throws NotFoundException, DuplicateItemException {
 		
-		var courseOptional = courseRepository.findById(id);
+		var course = courseRepository.getById(courseId);
 
-		if(courseOptional.isEmpty()) {
-			throw new NotFoundException("Cursul", "id", Integer.toString(id));
+		if(course == null) {
+			throw new NotFoundException("Cursul", "id", Integer.toString(courseId));
 		}
 		
-		var course = courseOptional.get();
 		
-		var studentOptional = studentRepository.findById(studentId);
+		var student = studentRepository.getById(studentId);
 		
-		if(studentOptional.isEmpty()) {
+		if(student == null) {
 			throw new NotFoundException("Studentul", "id", Integer.toString(studentId));
 		}
 		
-		var student = studentOptional.get();
+		StudentCourse createdVal = null;
+		StudentCourse result = validateUnique(studentId, courseId);
+		if(result == null) {
+			// nu exista => creez unul nou
+			StudentCourse sc = new StudentCourse();
+			sc.setCourse(course);
+			sc.setStudent(student);
+			sc.setGrade(0);
+			studentCourseRepository.save(sc);
+		}else {
+			throw new DuplicateItemException("Studentul este inscris deja", "id", studentId.toString());
+		}
 		
 		//var courseStudents = course.getStudents();
 		
@@ -190,11 +201,21 @@ public class CourseService {
 //		
 //		course.setStudents(newCourseStudents);
 
-		var updatedCourse = courseRepository.save(course);
 		
-		return modelMapper.map(updatedCourse, CourseResponseDto.class);
+		//return null;
 	}
 	
+	private StudentCourse validateUnique(Integer studentId, Integer courseId) {
+
+		List<StudentCourse> all = studentCourseRepository.findAll();
+
+		for(StudentCourse sc : all) {
+			if(sc.getCourse().getId() == courseId && sc.getStudent().getId() == studentId) {
+				return sc;
+			}
+		}
+		return null;
+	}
 	
 	
 }

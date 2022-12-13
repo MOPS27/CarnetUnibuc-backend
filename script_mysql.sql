@@ -12,7 +12,9 @@ INSERT INTO programmes VALUES (2, "gigel", 12);
 
 INSERT INTO student_course VALUES (1, 10, 1, 1);
 INSERT INTO subjects VALUES (1, 12, "materia x");
+INSERT INTO subjects VALUES (2, 6, "materia y");
 INSERT INTO courses VALUES (1, "2019-2020", "profesor x", 1);
+INSERT INTO courses VALUES (2, "2019-2020", "profesor z", 2);
 
 
 -- INSERT INTO courses VALUES (1, 12, "Curs 1");

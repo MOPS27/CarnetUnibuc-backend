@@ -86,7 +86,7 @@ public class StudentCourseService {
 		return -1;
 	}
 	
-	public StudentCourseResponseDto create(@Valid StudentCourseRequestDto request) throws NotFoundException, DuplicateItemException{
+	public StudentCourseResponseDto create(@Valid StudentCourseRequestDto request) throws NotFoundException{
 
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 		StudentCourse val = modelMapper.map(request, StudentCourse.class);

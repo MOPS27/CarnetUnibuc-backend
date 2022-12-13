@@ -3,9 +3,9 @@ package com.reportcard.project.dtos;
 public class StudentsGradesForOneCoursesResponseDto {
 
 	private Integer grade;
-	private String studentLastName;
-	private String sutdentFirstName;
-	private String studentEmail;
+	private String lastName;
+	private String firstName;
+	private String email;
 	private Integer groupNumber;
 	
 	public Integer getGrade() {
@@ -14,23 +14,24 @@ public class StudentsGradesForOneCoursesResponseDto {
 	public void setGrade(Integer grade) {
 		this.grade = grade;
 	}
-	public String getStudentLastName() {
-		return studentLastName;
+	
+	public String getLastName() {
+		return lastName;
 	}
-	public void setStudentLastName(String studentLastName) {
-		this.studentLastName = studentLastName;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
-	public String getSutdentFirstName() {
-		return sutdentFirstName;
+	public String getFirstName() {
+		return firstName;
 	}
-	public void setSutdentFirstName(String sutdentFirstName) {
-		this.sutdentFirstName = sutdentFirstName;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
-	public String getStudentEmail() {
-		return studentEmail;
+	public String getEmail() {
+		return email;
 	}
-	public void setStudentEmail(String studentEmail) {
-		this.studentEmail = studentEmail;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	public Integer getGroupNumber() {
 		return groupNumber;
