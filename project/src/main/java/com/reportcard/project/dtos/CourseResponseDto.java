@@ -7,7 +7,7 @@ public class CourseResponseDto {
 	private String professorName;
 	private SubjectResponseDto subject;
 	private String calendarYearName;
-	//private List<StudentResponseDto> students;
+
 	public Integer getId() {
 		return id;
 	}
@@ -32,11 +32,5 @@ public class CourseResponseDto {
 	public void setCalendarYearName(String calendarYearName) {
 		this.calendarYearName = calendarYearName;
 	}
-//	public List<StudentResponseDto> getStudents() {
-//		return students;
-//	}
-//	public void setStudents(List<StudentResponseDto> students) {
-//		this.students = students;
-//	}
 	
 }

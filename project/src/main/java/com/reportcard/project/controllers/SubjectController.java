@@ -61,17 +61,4 @@ public class SubjectController {
 	}
 	
 	
-	@PutMapping(path = "/update/{objectId}", consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = {
-			MediaType.APPLICATION_JSON_VALUE })
-	public List<SubjectResponseDto> updateSubject(@PathVariable String objectId,
-			@RequestBody SubjectResponseDto subjectDto) {
-		return subjectService.getAll();
-	}
-	
-	@DeleteMapping(path = "/delete/{objectId}", consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = {
-			MediaType.APPLICATION_JSON_VALUE })
-	public List<SubjectResponseDto> deleteSubject(@PathVariable String objectId) {
-		return subjectService.getAll();
-	}
-	
 }

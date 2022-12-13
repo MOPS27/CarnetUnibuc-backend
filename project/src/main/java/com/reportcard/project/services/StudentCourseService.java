@@ -119,7 +119,6 @@ public class StudentCourseService {
 	}
 	
 	public StudentCourse updateGrade(Integer studentCourseId, Integer grade){
-		System.out.println("StudentCourse id " + studentCourseId.toString());
 		StudentCourse sc = studentCourseRepository.getById(studentCourseId);
 		sc.setGrade(grade);
 

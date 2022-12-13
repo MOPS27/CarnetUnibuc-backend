@@ -25,6 +25,4 @@ public class StudentCourseRequestDto {
 		this.studentId = studentId;
 	}
 	
-	
-	
 }
