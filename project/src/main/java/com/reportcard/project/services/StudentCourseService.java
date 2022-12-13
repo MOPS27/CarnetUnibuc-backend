@@ -2,6 +2,7 @@ package com.reportcard.project.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -10,6 +11,7 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.reportcard.project.dtos.CourseResponseDto;
 import com.reportcard.project.dtos.StudentCourseRequestDto;
 import com.reportcard.project.dtos.StudentCourseResponseDto;
 import com.reportcard.project.dtos.SubjectRequestDto;
@@ -45,6 +47,13 @@ public class StudentCourseService {
 	
 	ModelMapper modelMapper = new ModelMapper();
 	
+	public List<StudentCourseResponseDto> getAll() {
+		return studentCourseRepository.findAll()
+				.stream()
+				.map(x -> modelMapper.map(x, StudentCourseResponseDto.class))
+				.collect(Collectors.toList());
+	}
+	
 	public List<SubjectsGradesResponseDto> getSubjectsAndGradesByStudent(Integer studentId) throws NotFoundException {
 		List<SubjectsGradesResponseDto> returnValue = new ArrayList<>();
 
@@ -71,36 +80,47 @@ public class StudentCourseService {
 		Integer studentId = request.getStudentId();
 		Integer courseId = request.getCourseId();
 		
-		
 		Student student = studentRepository.getById(studentId);
 		if(student == null) {
 			throw new NotFoundException("Studentul", "id", Integer.toString(studentId));
 		}
 		
 		Course course = courseRepository.getById(courseId);
-		
-		
 		if(course == null) {
 			throw new NotFoundException("Cursul", "id", Integer.toString(studentId));
 		}
-		validateUnique(course.getSubject().getName());
 		
-		val.setStudent(student);
-		val.setCourse(course);
+		StudentCourse createdVal = null;
+		var result = validateUnique(course.getSubject().getName());
+		if(result == null) {
+			// nu exista => creez unul nou
+			val.setStudent(student);
+			val.setCourse(course);
 
-		var createdVal = studentCourseRepository.save(val);
-
+			createdVal = studentCourseRepository.save(val);
+		}else {
+			createdVal = updateGrade(result, request.getGrade());
+		}
+		
 		return modelMapper.map(createdVal, StudentCourseResponseDto.class);
 	}
 	
-	private void validateUnique(String name) throws DuplicateItemException {
+	public StudentCourse updateGrade(Integer studentCourseId, Integer grade){
+		StudentCourse sc = studentCourseRepository.getById(studentCourseId);
+		sc.setGrade(grade);
 
-		var all = studentCourseRepository.findAll();
+		return studentCourseRepository.save(sc);
+	}
+	
+	private Integer validateUnique(String name) {
 
-		var any = all.stream().anyMatch(x -> x.getCourse().getSubject().getName().equals(name));
+		List<StudentCourse> all = studentCourseRepository.findAll();
 
-		if (any) {
-			throw new DuplicateItemException("Materia", "denumirea", name);
+		for(StudentCourse sc : all) {
+			if(sc.getCourse().getSubject().getName().compareTo(name) == 0) {
+				return sc.getId();
+			}
 		}
+		return null;
 	}
 }

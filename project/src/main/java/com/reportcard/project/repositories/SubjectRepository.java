@@ -7,5 +7,5 @@ import com.reportcard.project.model.Subject;
 
 @Repository
 public interface SubjectRepository  extends JpaRepository<Subject, Integer>{
-
+	boolean findByName(String name);
 }
