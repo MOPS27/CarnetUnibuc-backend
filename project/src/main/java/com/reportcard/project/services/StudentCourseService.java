@@ -73,6 +73,19 @@ public class StudentCourseService {
 		return returnValue;
 	}
 	
+	public Integer getGradeByCourseAndStudentId(Integer courseId, Integer studentId) {
+
+		List<StudentCourse> list = studentCourseRepository.findAll();
+		
+		for(StudentCourse l : list) {
+			if(l.getCourse().getId() == courseId && l.getStudent().getId() == studentId) {
+				return l.getGrade();
+			}
+		}
+		
+		return -1;
+	}
+	
 	public StudentCourseResponseDto create(@Valid StudentCourseRequestDto request) throws NotFoundException, DuplicateItemException{
 
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);

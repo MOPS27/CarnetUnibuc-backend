@@ -33,6 +33,7 @@ public class StudentCourseController {
 		return studentCourseService.getSubjectsAndGradesByStudent(studentId);
 	}
 	
+	
 	@PostMapping
 	public StudentCourseResponseDto create(@Valid @RequestBody StudentCourseRequestDto request) throws NotFoundException, DuplicateItemException {
 		return studentCourseService.create(request);

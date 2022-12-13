@@ -20,12 +20,16 @@ import org.springframework.stereotype.Service;
 
 import com.reportcard.project.dtos.CourseRequestDto;
 import com.reportcard.project.dtos.CourseResponseDto;
+import com.reportcard.project.dtos.SubjectResponseDto;
+import com.reportcard.project.dtos.SubjectsGradesResponseDto;
 import com.reportcard.project.exceptions.DuplicateItemException;
 import com.reportcard.project.exceptions.NotFoundException;
 import com.reportcard.project.model.Course;
 import com.reportcard.project.model.Student;
+import com.reportcard.project.model.StudentCourse;
 import com.reportcard.project.repositories.CourseRepository;
 import com.reportcard.project.repositories.GroupRepository;
+import com.reportcard.project.repositories.StudentCourseRepository;
 import com.reportcard.project.repositories.StudentRepository;
 import com.reportcard.project.repositories.SubjectRepository;
 @Service
@@ -42,6 +46,9 @@ public class CourseService {
 	
 	@Autowired
 	StudentRepository studentRepository;
+	
+	@Autowired
+	StudentCourseRepository studentCourseRepository;
 
 	
 	ModelMapper modelMapper = new ModelMapper();
@@ -51,12 +58,12 @@ public class CourseService {
 			.addMappings(mapper -> {
 				mapper.map(src -> src.getSubject(), 
 						   CourseResponseDto::setSubject);
-				mapper.map(src -> { 
-							return src.getStudents() == null 
-									? new ArrayList<Student>()
-									: src.getStudents();
-						   },
-						   CourseResponseDto::setStudents);
+//				mapper.map(src -> { 
+//							return src.getStudents() == null 
+//									? new ArrayList<Student>()
+//									: src.getStudents();
+//						   },
+						   //CourseResponseDto::setStudents);
 			});
 		
 		modelMapper.typeMap(CourseRequestDto.class, Course.class)
@@ -70,6 +77,16 @@ public class CourseService {
 				.stream()
 				.map(x -> modelMapper.map(x, CourseResponseDto.class))
 				.collect(Collectors.toList());
+	}
+	
+	public List<StudentCourse> getStudentsAndGradesByCourseId(Integer courseId) throws NotFoundException {
+
+		var course = courseRepository.findById(courseId);
+		if(course.isEmpty()) {
+			throw new NotFoundException("Cursul", "id", Integer.toString(courseId));
+		}
+
+		return studentCourseRepository.findAllByCourseId(courseId);
 	}
 	
 	public List<CourseResponseDto> getBySubject(int subjectId) throws NotFoundException {
@@ -119,18 +136,18 @@ public class CourseService {
 			throw new NotFoundException("Grupa", "id", Integer.toString(groupId));
 		}
 		
-		var courseStudents = course.getStudents();
+		//var courseStudents = course.getStudents();
 		
 		var groupStudents = group.get().getStudents();
 		
 		// join already existing students with newly added students
 		// and remove duplicate students
-		List<Student> newCourseStudents = Stream.concat(courseStudents.stream(), groupStudents.stream())
-                .collect(collectingAndThen(
-                			toCollection(() -> new TreeSet<>(comparingInt(Student::getId))),
-                			ArrayList::new));
+//		List<Student> newCourseStudents = Stream.concat(courseStudents.stream(), groupStudents.stream())
+//                .collect(collectingAndThen(
+//                			toCollection(() -> new TreeSet<>(comparingInt(Student::getId))),
+//                			ArrayList::new));
 		
-		course.setStudents(newCourseStudents);
+		//course.setStudents(newCourseStudents);
 
 		var updatedCourse = courseRepository.save(course);
 		
@@ -157,21 +174,21 @@ public class CourseService {
 		
 		var student = studentOptional.get();
 		
-		var courseStudents = course.getStudents();
+		//var courseStudents = course.getStudents();
 		
 		// if student already added to course, throw
-		if(courseStudents.stream().anyMatch(x -> x.getId() == studentId)) {
-			throw new DuplicateItemException("Studentul", "id", Integer.toString(studentId));
-		}
+//		if(courseStudents.stream().anyMatch(x -> x.getId() == studentId)) {
+//			throw new DuplicateItemException("Studentul", "id", Integer.toString(studentId));
+//		}
 		
 		// add student to the list of already existing students
-		List<Student> newCourseStudents 
-		= Stream.concat(
-					courseStudents.stream(), 
-					Arrays.asList(student).stream())
-                .collect(Collectors.toList());
-		
-		course.setStudents(newCourseStudents);
+//		List<Student> newCourseStudents 
+//		= Stream.concat(
+//					courseStudents.stream(), 
+//					Arrays.asList(student).stream())
+//                .collect(Collectors.toList());
+//		
+//		course.setStudents(newCourseStudents);
 
 		var updatedCourse = courseRepository.save(course);
 		

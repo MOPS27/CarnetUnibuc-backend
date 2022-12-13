@@ -30,8 +30,8 @@ public class Course {
 	@JoinColumn(name = "subject_id", referencedColumnName = "id", nullable = false)
 	private Subject subject;
 	
-	@ManyToMany
-	private List<Student> students;
+//	@ManyToMany
+//	private List<Student> students;
 	
 	@NotBlank
 	@Column(nullable=false, length = 100)
@@ -69,13 +69,13 @@ public class Course {
 		this.subject = subject;
 	}
 
-	public List<Student> getStudents() {
-		return students;
-	}
-
-	public void setStudents(List<Student> students) {
-		this.students = students;
-	}
+//	public List<Student> getStudents() {
+//		return students;
+//	}
+//
+//	public void setStudents(List<Student> students) {
+//		this.students = students;
+//	}
 	
 	
 	
