@@ -25,7 +25,7 @@ import com.reportcard.project.exceptions.DuplicateItemException;
 import com.reportcard.project.exceptions.NotFoundException;
 import com.reportcard.project.services.ProgrammeService;
 
-@CrossOrigin
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/programmes")
 public class ProgrammeController {

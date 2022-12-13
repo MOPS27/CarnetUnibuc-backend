@@ -29,7 +29,7 @@ import com.reportcard.project.exceptions.NotFoundException;
 import com.reportcard.project.services.CourseService;
 import com.reportcard.project.services.SubjectService;
 
-@CrossOrigin
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/subjects")
 public class SubjectController {

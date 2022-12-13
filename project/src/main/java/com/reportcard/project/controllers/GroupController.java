@@ -22,7 +22,7 @@ import com.reportcard.project.dtos.GroupResponseDto;
 import com.reportcard.project.exceptions.DuplicateItemException;
 import com.reportcard.project.services.GroupService;
 
-@CrossOrigin
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/groups")
 public class GroupController {

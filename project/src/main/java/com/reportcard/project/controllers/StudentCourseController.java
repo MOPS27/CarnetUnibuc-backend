@@ -20,7 +20,7 @@ import com.reportcard.project.exceptions.DuplicateItemException;
 import com.reportcard.project.exceptions.NotFoundException;
 import com.reportcard.project.services.StudentCourseService;
 
-@CrossOrigin
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/grades")
 public class StudentCourseController {

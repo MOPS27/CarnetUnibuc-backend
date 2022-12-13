@@ -17,7 +17,7 @@ import com.reportcard.project.dtos.StudentRequestDto;
 import com.reportcard.project.dtos.StudentResponseDto;
 import com.reportcard.project.services.StudentService;
 
-@CrossOrigin
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/students")
 public class StudentController {

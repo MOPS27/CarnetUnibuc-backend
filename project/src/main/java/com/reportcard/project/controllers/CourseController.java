@@ -30,7 +30,7 @@ import com.reportcard.project.model.StudentCourse;
 import com.reportcard.project.services.CourseService;
 import com.reportcard.project.services.StudentCourseService;
 
-@CrossOrigin
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/courses")
 public class CourseController {
