@@ -141,7 +141,14 @@ public class CourseService {
 		List<Student> listStudentsFromOneGroup = studentRepository.findAllByGroupId(groupId);
 		
 		for(Student s: listStudentsFromOneGroup) {
+			
+			try {
 			addStudentToCourse(courseId, s.getId());
+			}
+			catch(DuplicateItemException e) {
+				continue;
+			}
+			
 		}
 		
 	}
